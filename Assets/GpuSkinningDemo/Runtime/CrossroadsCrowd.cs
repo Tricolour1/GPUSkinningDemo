@@ -6,7 +6,7 @@ using UnityEngine.Rendering;
 namespace GpuSkinningDemo
 {
     // Pedestrians at a signalised junction. Routes, waiting and signals run on the CPU; skinning and
-    // the cross-fade between idle, walk and run happen in the BAT vertex shader.
+    // the animation blend between idle, walk and run happen in the BAT vertex shader.
     public sealed class CrossroadsCrowd : MonoBehaviour
     {
         public const float RoadHalfWidth = 6, SidewalkWidth = 5, Extent = 60;
@@ -31,7 +31,7 @@ namespace GpuSkinningDemo
         private readonly List<Batch>[] batches = { new List<Batch>(), new List<Batch>(), new List<Batch>() };
         private MaterialPropertyBlock properties;
         private System.Random random;
-        private bool crossFade = true, orbit = true;
+        private bool animationBlend = true, orbit = true;
         private float angle = 35, smoothedDelta;
         private bool lastGreenX, lastGreenZ;
         private ProfilerRecorder drawCalls, batchesCount, setPass;
@@ -252,7 +252,7 @@ namespace GpuSkinningDemo
             else agent.Position += offset / distance * step;
 
             int clip = desired <= 0 ? Idle : agent.Running ? Run : Walk;
-            if (clip != agent.Clip) SetClip(agent, clip, time, crossFade);
+            if (clip != agent.Clip) SetClip(agent, clip, time, animationBlend);
         }
 
         private void Arrive(Agent agent, float time)
@@ -381,7 +381,7 @@ namespace GpuSkinningDemo
                 if (GUILayout.Button(amount.ToString(), GUILayout.Width(70))) Spawn(amount);
             GUILayout.EndHorizontal();
             GUILayout.BeginHorizontal();
-            crossFade = GUILayout.Toggle(crossFade, "Cross-fade 0.3 s", GUI.skin.button, GUILayout.Width(150));
+            animationBlend = GUILayout.Toggle(animationBlend, "Animation blend 0.3 s", GUI.skin.button, GUILayout.Width(180));
             orbit = GUILayout.Toggle(orbit, "Orbit camera", GUI.skin.button, GUILayout.Width(130));
             GUILayout.EndHorizontal();
             GUILayout.EndArea();

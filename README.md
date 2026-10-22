@@ -4,9 +4,8 @@
 
 <table>
   <tr>
-    <td align="center"><img src="Docs/Media/bat_idle.gif" alt="BAT Idle"><br>Idle</td>
-    <td align="center"><img src="Docs/Media/bat_walk.gif" alt="BAT Walk"><br>Walk</td>
-    <td align="center"><img src="Docs/Media/bat_run.gif" alt="BAT Run"><br>Run</td>
+    <td align="center"><img src="Docs/Media/crossroads.gif" alt="Crossroads"><br>Crossroads</td>
+    <td align="center"><img src="Docs/Media/bat_run.gif" alt="Character Park, BAT run"><br>Character Park · BAT</td>
   </tr>
 </table>
 

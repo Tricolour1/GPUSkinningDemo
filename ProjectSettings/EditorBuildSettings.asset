@@ -11,7 +11,4 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/GpuSkinningDemo/Generated/Sample/GpuSkinningDemo.unity
     guid: 40a263c358d43224fbbfef4ffad289aa
-  - enabled: 1
-    path: Assets/GpuSkinningDemo/Generated/Crossroads/Crossroads.unity
-    guid: 6cf08521bc62cd64b85037d3bac4cd22
   m_configObjects: {}

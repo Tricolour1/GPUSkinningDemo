@@ -11,7 +11,7 @@ Shader "GpuSkinningDemo/BakedSkinning"
         _Loop("Loop", Float) = 1
         _Playback("Start Frame / Frame Count / Duration / Phase", Vector) = (0,2,1,0)
         _PlaybackPrev("Previous Clip (Start / Count / Duration / Phase)", Vector) = (0,2,1,0)
-        _Blend("Cross-fade (Start Time / Duration)", Vector) = (0,0,0,0)
+        _Blend("Animation Blend (Start Time / Duration)", Vector) = (0,0,0,0)
     }
     SubShader
     {
@@ -105,7 +105,7 @@ Shader "GpuSkinningDemo/BakedSkinning"
                 UNITY_SETUP_INSTANCE_ID(input);
                 float3 position, normal;
                 SamplePose(UNITY_ACCESS_INSTANCED_PROP(Playback, _Playback), input, position, normal);
-                // Cross-fade from the previous clip; a zero duration (the default) means no blend.
+                // Animation blend from the previous clip; a zero duration (the default) means no blend.
                 float4 blend = UNITY_ACCESS_INSTANCED_PROP(Playback, _Blend);
                 float weight = blend.y > 0 ? saturate((_DemoTime - blend.x) / blend.y) : 1;
                 UNITY_BRANCH if (weight < 1)

@@ -152,7 +152,6 @@ namespace GpuSkinningDemo.Editor
             var routeMaterials = new[] { amber, blue, violet };
             Box("Plaza foundation", scene.transform, new Vector3(0, -0.45f, 0), new Vector3(36 * s, 0.6f, 13 * s), teal);
             string[] names = { "01   ANIMATOR", "02   BAT", "03   VAT" };
-            string[] descriptions = { "Animator + SkinnedMeshRenderer", "Bone Animation Texture  /  vertex shader skinning", "Vertex Animation Texture  /  vertex fetch" };
             for (int p = 0; p < 3; p++)
             {
                 var island = new GameObject(names[p]).transform;
@@ -180,12 +179,9 @@ namespace GpuSkinningDemo.Editor
                 Cylinder("Still water", island, new Vector3(0, 0.38f, 0.4f * s), new Vector3(1.13f * s, 0.01f, 1.13f * s), water);
                 Cylinder("Fountain center", island, new Vector3(0, 0.66f, 0.4f * s), new Vector3(0.17f * s, 0.29f, 0.17f * s), stone);
                 Box("Pipeline sign", island, new Vector3(0, 0.41f, -4.25f * s), new Vector3(7.1f * s, 0.72f, 0.16f), teal);
-                Text(names[p], island, new Vector3(0, 1.0f, -4.25f * s - 0.3f), 0.32f * s, Color.white, camera.transform.rotation);
-                Text(descriptions[p], island, new Vector3(0, 0.53f, -4.25f * s - 0.45f), 0.13f * s, new Color(0.82f, 0.94f, 0.84f), camera.transform.rotation);
+                Text(names[p], island, new Vector3(0, 0.8f, -4.25f * s - 0.35f), 0.32f * s, Color.white, camera.transform.rotation);
             }
             Text("ANIMATION PARK", scene.transform, new Vector3(0, 1.3f * s, 6.5f * s), 0.72f * s, teal.color, camera.transform.rotation);
-            Text("THREE CHARACTERS     /     THREE PATHS     /     THREE RENDER PIPELINES", scene.transform,
-                new Vector3(0, 0.5f * s, 6.5f * s), 0.2f * s, teal.color, camera.transform.rotation);
             var demo = new GameObject("Character Park Controller").AddComponent<CharacterParkDemo>();
             demo.characters = characters; demo.demoCamera = camera;
             demo.shadowMaterial = Material("Character contact shadows", new Color(0.24f, 0.3f, 0.23f));
