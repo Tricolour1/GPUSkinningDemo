@@ -10,6 +10,8 @@ Shader "GpuSkinningDemo/BakedSkinning"
         _DemoTime("Playback Time", Float) = 0
         _Loop("Loop", Float) = 1
         _Playback("Start Frame / Frame Count / Duration / Phase", Vector) = (0,2,1,0)
+        _PlaybackPrev("Previous Clip (Start / Count / Duration / Phase)", Vector) = (0,2,1,0)
+        _Blend("Cross-fade (Start Time / Duration)", Vector) = (0,0,0,0)
     }
     SubShader
     {
@@ -37,6 +39,8 @@ Shader "GpuSkinningDemo/BakedSkinning"
             CBUFFER_END
             UNITY_INSTANCING_BUFFER_START(Playback)
                 UNITY_DEFINE_INSTANCED_PROP(float4, _Playback)
+                UNITY_DEFINE_INSTANCED_PROP(float4, _PlaybackPrev)
+                UNITY_DEFINE_INSTANCED_PROP(float4, _Blend)
             UNITY_INSTANCING_BUFFER_END(Playback)
 
             struct Attributes
@@ -82,10 +86,9 @@ Shader "GpuSkinningDemo/BakedSkinning"
                 }
 #endif
             }
-            Varyings Vert(Attributes input)
+            // Samples one clip at the current time, interpolating between its two nearest baked frames.
+            void SamplePose(float4 playback, Attributes input, out float3 position, out float3 normal)
             {
-                UNITY_SETUP_INSTANCE_ID(input);
-                float4 playback = UNITY_ACCESS_INSTANCED_PROP(Playback, _Playback);
                 float t = _DemoTime / playback.z + playback.w;
                 t = _Loop > 0.5 ? frac(t) : saturate(t);
                 float f = t * (playback.y - 1);
@@ -94,9 +97,28 @@ Shader "GpuSkinningDemo/BakedSkinning"
                 float3 p0, n0, p1, n1;
                 SkinFrame((uint)playback.x + f0, input, p0, n0);
                 SkinFrame((uint)playback.x + f1, input, p1, n1);
+                position = lerp(p0, p1, frac(f));
+                normal = lerp(n0, n1, frac(f));
+            }
+            Varyings Vert(Attributes input)
+            {
+                UNITY_SETUP_INSTANCE_ID(input);
+                float3 position, normal;
+                SamplePose(UNITY_ACCESS_INSTANCED_PROP(Playback, _Playback), input, position, normal);
+                // Cross-fade from the previous clip; a zero duration (the default) means no blend.
+                float4 blend = UNITY_ACCESS_INSTANCED_PROP(Playback, _Blend);
+                float weight = blend.y > 0 ? saturate((_DemoTime - blend.x) / blend.y) : 1;
+                UNITY_BRANCH if (weight < 1)
+                {
+                    float3 previousPosition, previousNormal;
+                    SamplePose(UNITY_ACCESS_INSTANCED_PROP(Playback, _PlaybackPrev), input, previousPosition, previousNormal);
+                    weight = weight * weight * (3 - 2 * weight);
+                    position = lerp(previousPosition, position, weight);
+                    normal = lerp(previousNormal, normal, weight);
+                }
                 Varyings output;
-                output.positionCS = TransformObjectToHClip(lerp(p0, p1, frac(f)));
-                output.normalWS = TransformObjectToWorldNormal(normalize(lerp(n0, n1, frac(f))));
+                output.positionCS = TransformObjectToHClip(position);
+                output.normalWS = TransformObjectToWorldNormal(normalize(normal));
                 output.uv = TRANSFORM_TEX(input.uv, _BaseMap);
                 output.color = input.color;
                 return output;
