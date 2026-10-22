@@ -1,0 +1,79 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6c337033620cd3e4d81de898d22f0068, type: 3}
+  m_Name: Passerby_09_Animation
+  m_EditorClassIdentifier: 
+  mesh: {fileID: 4300000, guid: f527a8587742ad24d8b8e0c2a9d5ddac, type: 2}
+  boneTexture: {fileID: 2800000, guid: aeb0f130fc4c2d2498103772da3baa98, type: 2}
+  material: {fileID: 2100000, guid: 7611db7402077dc4b98833f84c757783, type: 2}
+  vertexTexture: {fileID: 2800000, guid: c7be83a4dd125694588ed19b68765566, type: 2}
+  vertexMaterial: {fileID: 2100000, guid: da2de4da1ce6e8a40a5bd8bc90fef368, type: 2}
+  boneCount: 23
+  clips:
+  - name: Common_Idle_01
+    duration: 2.3333335
+    startFrame: 0
+    frameCount: 72
+    loop: 1
+  - name: Common_Walk_01
+    duration: 0.8000001
+    startFrame: 72
+    frameCount: 26
+    loop: 1
+  - name: Common_Run_01
+    duration: 0.6666667
+    startFrame: 98
+    frameCount: 21
+    loop: 1
+  sourcePrefab: {fileID: 8253828211574513183, guid: 024dbd4fa6823d746ba5842041e463d5, type: 3}
+  referenceController: {fileID: 9100000, guid: 5d0dc0ff10e9ad64a901b9b0bd676eb6, type: 2}
+  rendererToRoot:
+    e00: 1
+    e01: 0
+    e02: 0
+    e03: 0
+    e10: 0
+    e11: 1
+    e12: -0.00000004371139
+    e13: 0
+    e20: 0
+    e21: 0.00000004371139
+    e22: 1
+    e23: 0
+    e30: 0
+    e31: 0
+    e32: 0
+    e33: 1
+  validation: 'Encoding validation: PASS
+
+    Reference: SkinnedMeshRenderer.BakeMesh;
+    decoded actual saved texture precision.
+
+    Vertex samples: 112217
+
+    Maximum
+    position error: 0.000912882679 local units
+
+    RMS position error: 0.000263479933
+    local units
+
+    Tolerance: 0.005 local units
+
+    Texture: 256 x 33, RGBAHalf
+
+    Allocated
+    texture bytes: 67584
+
+    This validates sampled positions and texture encoding;
+    runtime shader and interpolation require rendering verification.
+
+'

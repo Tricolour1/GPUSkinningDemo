@@ -1,0 +1,6 @@
+VAT encoding: PASS
+Vertex samples: 101864
+Maximum position error: 0.000544360664
+RMS position error: 0.000217709502
+Texture: 256 x 796 RGBAHalf
+Allocated bytes: 1630208

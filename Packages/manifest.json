@@ -1,0 +1,10 @@
+{
+  "dependencies": {
+    "com.coplaydev.unity-mcp": "https://github.com/CoplayDev/unity-mcp.git?path=/MCPForUnity#aa5fc638d623f56178d50329d9ad8c541a57fe66",
+    "com.unity.device-simulator.devices": "1.0.1",
+    "com.unity.render-pipelines.universal": "14.0.12",
+    "com.unity.modules.animation": "1.0.0",
+    "com.unity.modules.imageconversion": "1.0.0",
+    "com.unity.modules.imgui": "1.0.0"
+  }
+}
