@@ -218,8 +218,11 @@ namespace GpuSkinningDemo.Editor
                 }
             string scenePath = Output + "/CharacterPark.unity";
             EditorSceneManager.SaveScene(SceneManager.GetActiveScene(), scenePath);
-            EditorBuildSettings.scenes = new[] { new EditorBuildSettingsScene(scenePath, true),
-                new EditorBuildSettingsScene("Assets/GpuSkinningDemo/Generated/Sample/GpuSkinningDemo.unity", true) };
+            // The park must stay the first build scene; keep any other scenes already listed.
+            const string samplePath = "Assets/GpuSkinningDemo/Generated/Sample/GpuSkinningDemo.unity";
+            var scenes = new List<EditorBuildSettingsScene> { new EditorBuildSettingsScene(scenePath, true), new EditorBuildSettingsScene(samplePath, true) };
+            scenes.AddRange(EditorBuildSettings.scenes.Where(scene => scene.path != scenePath && scene.path != samplePath));
+            EditorBuildSettings.scenes = scenes.ToArray();
             if (SceneView.lastActiveSceneView != null) SceneView.lastActiveSceneView.Frame(new Bounds(Vector3.zero, new Vector3(36 * s, 6, 16 * s)), false);
         }
 

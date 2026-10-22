@@ -215,6 +215,8 @@ namespace GpuSkinningDemo.Editor
             material.SetFloat("_Smoothness", 0);
             if (emission.HasValue)
             {
+                // Without clearing EmissiveIsBlack, URP's material validation turns _EMISSION back off.
+                material.globalIlluminationFlags = MaterialGlobalIlluminationFlags.RealtimeEmissive;
                 material.EnableKeyword("_EMISSION");
                 material.SetColor("_EmissionColor", emission.Value);
             }
