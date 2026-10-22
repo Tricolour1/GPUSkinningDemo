@@ -5,6 +5,10 @@ namespace GpuSkinningDemo
     // Arc-length lookup gives all render paths the same constant-speed root motion.
     public sealed class ParkMotionPath
     {
+        // Park layout scale shared by the scene builder and the runtime demo.
+        // Characters keep their size; routes, lawns and zone spacing grow with it.
+        public const float Scale = 2.5f;
+        public const float ZoneSpacing = 11.8f * Scale;
         private const int Segments = 192;
         private readonly Vector3[] points = new Vector3[Segments + 1];
         private readonly float[] distance = new float[Segments + 1];
@@ -26,6 +30,7 @@ namespace GpuSkinningDemo
                     int index = Mathf.Min(3, Mathf.FloorToInt(segment));
                     points[i] = Vector3.Lerp(corners[index], corners[(index + 1) % 4], segment - index);
                 }
+                points[i] *= Scale;
                 if (i > 0) distance[i] = distance[i - 1] + Vector3.Distance(points[i - 1], points[i]);
             }
         }

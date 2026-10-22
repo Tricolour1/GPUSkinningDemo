@@ -2,7 +2,13 @@
 
 [English](#english) · [中文](#中文)
 
-![Character Park](Docs/Verification/Park_Overview.png)
+<table>
+  <tr>
+    <td align="center"><img src="Docs/Media/bat_idle.gif" alt="BAT Idle"><br>Idle</td>
+    <td align="center"><img src="Docs/Media/bat_walk.gif" alt="BAT Walk"><br>Walk</td>
+    <td align="center"><img src="Docs/Media/bat_run.gif" alt="BAT Run"><br>Run</td>
+  </tr>
+</table>
 
 ## English
 

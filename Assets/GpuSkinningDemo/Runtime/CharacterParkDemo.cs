@@ -52,11 +52,12 @@ namespace GpuSkinningDemo
         public void SetView(int index)
         {
             view = Mathf.Clamp(index, 0, 3);
-            Vector3 center = view == 0 ? new Vector3(0, 0, 0.5f) : new Vector3((view - 2) * 11.8f, 0.6f, 0.5f);
-            demoCamera.transform.position = center + new Vector3(0, 25, -29);
+            float scale = ParkMotionPath.Scale;
+            Vector3 center = view == 0 ? new Vector3(0, 0, 0.5f * scale) : new Vector3((view - 2) * ParkMotionPath.ZoneSpacing, 0.6f, 0.5f * scale);
+            demoCamera.transform.position = center + new Vector3(0, 25, -29) * scale;
             demoCamera.transform.LookAt(center);
             demoCamera.orthographic = true;
-            demoCamera.orthographicSize = view == 0 ? Mathf.Max(12.2f, 20 / demoCamera.aspect) : Mathf.Max(5.8f, 6 / demoCamera.aspect);
+            demoCamera.orthographicSize = (view == 0 ? Mathf.Max(12.2f, 20 / demoCamera.aspect) : Mathf.Max(5.8f, 6 / demoCamera.aspect)) * scale;
             screenWidth = Screen.width; screenHeight = Screen.height;
         }
 
@@ -119,9 +120,9 @@ namespace GpuSkinningDemo
                 {
                     float phase = group.playback[i].w;
                     path.Evaluate(clock * moveSpeed + phase * path.Length, out var position, out var rotation);
-                    position += new Vector3((group.pipeline - 1) * 11.8f, 0.13f, 0);
+                    position += new Vector3((group.pipeline - 1) * ParkMotionPath.ZoneSpacing, 0.13f, 0);
                     // Copies use two small lateral offsets to keep stress-test crowds readable.
-                    position += rotation * Vector3.right * ((i % 3 - 1) * (copies == 1 ? 0 : 0.18f));
+                    position += rotation * Vector3.right * ((i % 3 - 1) * (copies == 1 ? 0 : 0.42f));
                     group.matrices[i] = Matrix4x4.TRS(position, rotation, Vector3.one) * asset.rendererToRoot;
                     group.shadows[i] = Matrix4x4.TRS(position + Vector3.up * 0.008f, Quaternion.identity, new Vector3(0.28f, 1, 0.22f));
                     if (group.roots != null) group.roots[i].transform.SetPositionAndRotation(position, rotation);

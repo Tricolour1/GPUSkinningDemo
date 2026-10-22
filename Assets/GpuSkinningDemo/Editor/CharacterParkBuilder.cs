@@ -119,14 +119,15 @@ namespace GpuSkinningDemo.Editor
             var pipeline = AssetDatabase.LoadAssetAtPath<UniversalRenderPipelineAsset>(DemoBuilder.Generated + "/DemoPipeline.asset");
             GraphicsSettings.defaultRenderPipeline = pipeline;
             QualitySettings.renderPipeline = pipeline;
+            float s = ParkMotionPath.Scale;
             var camera = new GameObject("Main Camera").AddComponent<Camera>();
             camera.tag = "MainCamera";
             camera.clearFlags = CameraClearFlags.SolidColor;
             camera.backgroundColor = new Color(0.71f, 0.83f, 0.84f);
-            camera.nearClipPlane = 0.1f; camera.farClipPlane = 150;
-            camera.transform.position = new Vector3(0, 25, -29);
-            camera.transform.LookAt(new Vector3(0, 0, 0.5f));
-            camera.orthographic = true; camera.orthographicSize = 12.5f;
+            camera.nearClipPlane = 0.1f; camera.farClipPlane = 150 * s;
+            camera.transform.position = new Vector3(0, 25, -29) * s;
+            camera.transform.LookAt(new Vector3(0, 0, 0.5f * s));
+            camera.orthographic = true; camera.orthographicSize = 12.5f * s;
             camera.gameObject.AddComponent<UniversalAdditionalCameraData>();
             var sun = new GameObject("Warm afternoon sun").AddComponent<Light>();
             sun.type = LightType.Directional; sun.intensity = 1.15f;
@@ -149,41 +150,42 @@ namespace GpuSkinningDemo.Editor
             var blue = Material("Figure eight blue", new Color(0.2f, 0.54f, 0.82f));
             var violet = Material("Waypoints violet", new Color(0.62f, 0.35f, 0.63f));
             var routeMaterials = new[] { amber, blue, violet };
-            Box("Plaza foundation", scene.transform, new Vector3(0, -0.45f, 0), new Vector3(36, 0.6f, 13), teal);
-            string[] names = { "01   ANIMATOR", "02   GPU SKINNING", "03   VERTEX TEXTURE" };
-            string[] descriptions = { "Animator + SkinnedMeshRenderer", "Bone matrices  /  vertex shader LBS", "Baked positions + normals  /  vertex fetch" };
+            Box("Plaza foundation", scene.transform, new Vector3(0, -0.45f, 0), new Vector3(36 * s, 0.6f, 13 * s), teal);
+            string[] names = { "01   ANIMATOR", "02   BAT", "03   VAT" };
+            string[] descriptions = { "Animator + SkinnedMeshRenderer", "Bone Animation Texture  /  vertex shader skinning", "Vertex Animation Texture  /  vertex fetch" };
             for (int p = 0; p < 3; p++)
             {
                 var island = new GameObject(names[p]).transform;
                 island.SetParent(scene.transform, false);
-                island.localPosition = new Vector3((p - 1) * 11.8f, 0, 0);
-                Box("Raised stone border", island, new Vector3(0, -0.12f, 0), new Vector3(10.7f, 0.35f, 10.6f), stone);
-                Box("Lawn", island, new Vector3(0, 0.045f, 0), new Vector3(10.2f, 0.1f, 10.1f), grass);
+                island.localPosition = new Vector3((p - 1) * ParkMotionPath.ZoneSpacing, 0, 0);
+                Box("Raised stone border", island, new Vector3(0, -0.12f, 0), new Vector3(10.7f * s, 0.35f, 10.6f * s), stone);
+                Box("Lawn", island, new Vector3(0, 0.045f, 0), new Vector3(10.2f * s, 0.1f, 10.1f * s), grass);
                 for (int r = 0; r < 3; r++)
                 {
                     var path = new ParkMotionPath(r);
-                    Ribbon("Paved route " + r, island, path, 0.62f, 0.102f, pathMaterial, p == 0);
-                    Ribbon("Route marker " + r, island, path, 0.045f, 0.108f, routeMaterials[r], p == 0);
+                    Ribbon("Paved route " + r, island, path, 1.35f, 0.102f, pathMaterial, p == 0);
+                    Ribbon("Route marker " + r, island, path, 0.06f, 0.108f, routeMaterials[r], p == 0);
                 }
                 for (int side = -1; side <= 1; side += 2)
                 {
-                    Tree(island, new Vector3(side * 4.15f, 0.1f, 3.65f), bark, foliage, lightLeaves, side * 13);
-                    Tree(island, new Vector3(side * 4.25f, 0.1f, -3.55f), bark, foliage, lightLeaves, side * 23);
-                    Box("Bench seat", island, new Vector3(side * 4.0f, 0.48f, 0), new Vector3(0.55f, 0.12f, 1.35f), bark);
-                    Box("Bench back", island, new Vector3(side * 4.24f, 0.78f, 0), new Vector3(0.1f, 0.65f, 1.35f), bark);
-                    Box("Bench foot", island, new Vector3(side * 4.0f, 0.25f, -0.45f), new Vector3(0.45f, 0.4f, 0.12f), teal);
-                    Box("Bench foot", island, new Vector3(side * 4.0f, 0.25f, 0.45f), new Vector3(0.45f, 0.4f, 0.12f), teal);
+                    Tree(island, new Vector3(side * 4.15f * s, 0.1f, 3.65f * s), bark, foliage, lightLeaves, side * 13);
+                    Tree(island, new Vector3(side * 4.25f * s, 0.1f, -3.55f * s), bark, foliage, lightLeaves, side * 23);
+                    float bench = side * 4.0f * s;
+                    Box("Bench seat", island, new Vector3(bench, 0.48f, 0), new Vector3(0.55f, 0.12f, 1.35f), bark);
+                    Box("Bench back", island, new Vector3(bench + side * 0.24f, 0.78f, 0), new Vector3(0.1f, 0.65f, 1.35f), bark);
+                    Box("Bench foot", island, new Vector3(bench, 0.25f, -0.45f), new Vector3(0.45f, 0.4f, 0.12f), teal);
+                    Box("Bench foot", island, new Vector3(bench, 0.25f, 0.45f), new Vector3(0.45f, 0.4f, 0.12f), teal);
                 }
-                Cylinder("Fountain stone", island, new Vector3(0, 0.22f, 0.4f), new Vector3(1.35f, 0.15f, 1.35f), stone);
-                Cylinder("Still water", island, new Vector3(0, 0.38f, 0.4f), new Vector3(1.13f, 0.01f, 1.13f), water);
-                Cylinder("Fountain center", island, new Vector3(0, 0.66f, 0.4f), new Vector3(0.17f, 0.29f, 0.17f), stone);
-                Box("Pipeline sign", island, new Vector3(0, 0.41f, -4.25f), new Vector3(7.1f, 0.72f, 0.16f), teal);
-                Text(names[p], island, new Vector3(0, 1.0f, -4.55f), 0.32f, Color.white, camera.transform.rotation);
-                Text(descriptions[p], island, new Vector3(0, 0.53f, -4.7f), 0.13f, new Color(0.82f, 0.94f, 0.84f), camera.transform.rotation);
+                Cylinder("Fountain stone", island, new Vector3(0, 0.22f, 0.4f * s), new Vector3(1.35f * s, 0.15f, 1.35f * s), stone);
+                Cylinder("Still water", island, new Vector3(0, 0.38f, 0.4f * s), new Vector3(1.13f * s, 0.01f, 1.13f * s), water);
+                Cylinder("Fountain center", island, new Vector3(0, 0.66f, 0.4f * s), new Vector3(0.17f * s, 0.29f, 0.17f * s), stone);
+                Box("Pipeline sign", island, new Vector3(0, 0.41f, -4.25f * s), new Vector3(7.1f * s, 0.72f, 0.16f), teal);
+                Text(names[p], island, new Vector3(0, 1.0f, -4.25f * s - 0.3f), 0.32f * s, Color.white, camera.transform.rotation);
+                Text(descriptions[p], island, new Vector3(0, 0.53f, -4.25f * s - 0.45f), 0.13f * s, new Color(0.82f, 0.94f, 0.84f), camera.transform.rotation);
             }
-            Text("ANIMATION PARK", scene.transform, new Vector3(0, 1.3f, 6.5f), 0.72f, teal.color, camera.transform.rotation);
+            Text("ANIMATION PARK", scene.transform, new Vector3(0, 1.3f * s, 6.5f * s), 0.72f * s, teal.color, camera.transform.rotation);
             Text("THREE CHARACTERS     /     THREE PATHS     /     THREE RENDER PIPELINES", scene.transform,
-                new Vector3(0, 0.5f, 6.5f), 0.2f, teal.color, camera.transform.rotation);
+                new Vector3(0, 0.5f * s, 6.5f * s), 0.2f * s, teal.color, camera.transform.rotation);
             var demo = new GameObject("Character Park Controller").AddComponent<CharacterParkDemo>();
             demo.characters = characters; demo.demoCamera = camera;
             demo.shadowMaterial = Material("Character contact shadows", new Color(0.24f, 0.3f, 0.23f));
@@ -195,7 +197,7 @@ namespace GpuSkinningDemo.Editor
                 {
                     var path = new ParkMotionPath(r);
                     path.Evaluate(r * 0.23f * path.Length, out var position, out var rotation);
-                    position += new Vector3((p - 1) * 11.8f, 0.13f, 0);
+                    position += new Vector3((p - 1) * ParkMotionPath.ZoneSpacing, 0.13f, 0);
                     if (p == 0)
                     {
                         var root = (GameObject)PrefabUtility.InstantiatePrefab(characters[r].sourcePrefab);
@@ -222,7 +224,7 @@ namespace GpuSkinningDemo.Editor
             EditorSceneManager.SaveScene(SceneManager.GetActiveScene(), scenePath);
             EditorBuildSettings.scenes = new[] { new EditorBuildSettingsScene(scenePath, true),
                 new EditorBuildSettingsScene("Assets/GpuSkinningDemo/Generated/Sample/GpuSkinningDemo.unity", true) };
-            if (SceneView.lastActiveSceneView != null) SceneView.lastActiveSceneView.Frame(new Bounds(Vector3.zero, new Vector3(36, 6, 16)), false);
+            if (SceneView.lastActiveSceneView != null) SceneView.lastActiveSceneView.Frame(new Bounds(Vector3.zero, new Vector3(36 * s, 6, 16 * s)), false);
         }
 
         private static Material Material(string name, Color color)
@@ -294,8 +296,10 @@ namespace GpuSkinningDemo.Editor
         {
             string assetPath = Output + "/" + name.Replace(' ', '_') + ".asset";
             var mesh = AssetDatabase.LoadAssetAtPath<Mesh>(assetPath);
-            if (create && mesh == null)
+            if (create)
             {
+                // Rebuild every time so route meshes follow the current layout scale.
+                if (mesh != null) AssetDatabase.DeleteAsset(assetPath);
                 var vertices = new Vector3[path.PointCount * 2]; var triangles = new List<int>();
                 for (int i = 0; i < path.PointCount; i++)
                 {
