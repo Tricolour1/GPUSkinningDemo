@@ -1,9 +1,0 @@
-﻿Encoding validation: PASS
-Reference: SkinnedMeshRenderer.BakeMesh; decoded actual saved texture precision.
-Vertex samples: 83448
-Maximum position error: 4.77782123E-07 local units
-RMS position error: 8.43026694E-08 local units
-Tolerance: 0.0001 local units
-Texture: 256 x 24, RGBAFloat
-Allocated texture bytes: 98304
-This validates sampled positions and texture encoding; runtime shader and interpolation require rendering verification.

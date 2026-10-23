@@ -5,7 +5,7 @@
 <table>
   <tr>
     <td align="center"><img src="Docs/Media/crossroads.gif" alt="Crossroads"><br>Crossroads</td>
-    <td align="center"><img src="Docs/Media/bat_run.gif" alt="Character Park, BAT run"><br>Character Park · BAT</td>
+    <td align="center"><img src="Docs/Media/park_bat.gif" alt="Character Park, BAT walk and run"><br>Character Park · BAT</td>
   </tr>
 </table>
 
